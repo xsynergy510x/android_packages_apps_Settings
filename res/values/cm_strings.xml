@@ -576,6 +576,11 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <!-- Performance settings -->
     <string name="performance_settings_title">Performance</string>
 
+    <!-- Kernel Tweaker Header Names, will appear and hide Performance settings when these apps are present -->
+    <string name="kernel_app_ktweaker_title">KTweaker</string>
+    <string name="kernel_app_stweaks_title">STweaks</string>
+    <string name="kernel_app_fauxclock_title">FauxClock</string>
+
     <!-- Performance Settings : Warning dialog -->
     <string name="performance_settings_warning_title">Proceed with caution</string>
     <string name="performance_settings_warning">These settings are experimental and any applied changes have the potential to cause instability, crashes, data loss or hardware failures.\n\nWe request that you do not file bug reports if any settings are changed from their defaults.</string>
