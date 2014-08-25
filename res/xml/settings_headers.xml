@@ -328,6 +328,39 @@
         android:icon="@drawable/ic_settings_performance"
         android:title="@string/performance_settings_title" />
 
+    <!-- Stweaks -->
+    <header 
+	android:icon="@drawable/ic_settings_performance" 
+    	android:id="@+id/kernel_app_stweaks" 
+  	android:title="@string/kernel_app_stweaks_title">
+  	<intent 
+	    android:targetPackage="com.gokhanmoral.stweaks.app" 
+ 	    android:action="android.intent.action.MAIN"
+	    android:targetClass="com.gokhanmoral.stweaks.app.MainActivity" />
+    </header>
+
+    <!-- KTweaker -->
+    <header 
+	android:icon="@drawable/ic_settings_performance" 
+	android:id="@+id/kernel_app_ktweaker"
+	android:title="@string/kernel_app_ktweaker_title">
+        <intent 
+	    android:targetPackage="com.ktoonsez.KTweaker"
+	    android:action="android.intent.action.MAIN" 
+	    android:targetClass="com.ktoonsez.KTweaker.MainActivity" />
+    </header>
+
+    <!-- FauxClock -->
+    <header 
+	android:icon="@drawable/ic_settings_performance" 
+	android:id="@+id/kernel_app_fauxclock" 
+	android:title="@string/kernel_app_fauxclock_title">
+	<intent 
+	    android:targetPackage="com.teamkang.fauxclock" 
+	    android:action="android.intent.action.MAIN"
+	    android:targetClass="com.teamkang.fauxclock.activities.InitialAppActivity" />
+     </header>
+
     <!-- About Device -->
     <header
         settings:includeXmlForSearch="@xml/device_info_settings"
