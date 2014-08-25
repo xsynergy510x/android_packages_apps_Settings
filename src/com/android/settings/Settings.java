@@ -763,9 +763,36 @@ public class Settings extends PreferenceActivity
                         target.remove(i);
                     }
                 }
-            } else if (id == R.id.development_settings
-                    || id == R.id.performance_settings) {
-                if (!showDev) {
+	    /*
+	     *  Add dynamic kernel tweaker in Dev Options menu
+	     *  If KTweaker, STweaks or FauxClock is installed, it replaces Performance Options	
+	     */
+	    } else if (id == R.id.development_settings) {
+		if (!showDev) {
+		    target.remove(i);
+		}
+	    } else if (id == R.id.performance_settings) {
+		if (!showDev || Utils.isPackageInstalled(this, "com.ktoonsez.KTweaker")		// If No Dev options or if KTweaker
+		    || Utils.isPackageInstalled(this, "com.gokhanmoral.stweaks.app")		// or if STweaks
+		    || Utils.isPackageInstalled(this, "com.teamkang.fauxclock") ) {		// or if FauxClock
+		    target.remove(i);								// Don't show Performance
+	        }
+    	    } else if (id == R.id.kernel_app_ktweaker) {					// Ktoonsez
+		if (!showDev) {									// If DevOptions are off
+	    	    target.remove(i);								
+	        } else if (!(Utils.isPackageInstalled(this, "com.ktoonsez.KTweaker"))) {	// Elif DevOptions are on
+                    target.remove(i);								// And if KTweaker isn't installed
+                }										// Then remove it
+	    } else if (id == R.id.kernel_app_stweaks) {	 					// Alcuard or Googy_Max
+		if (!showDev) {
+		    target.remove(i);
+		} else if (!(Utils.isPackageInstalled(this, "com.gokhanmoral.stweaks.app"))) {
+                    target.remove(i);
+                }
+	    } else if (id == R.id.kernel_app_fauxclock) {					// Faux
+		if (!showDev) {
+		    target.remove(i);
+	        } else if (!(Utils.isPackageInstalled(this, "com.teamkang.fauxclock"))) {
                     target.remove(i);
                 }
             } else if (id == R.id.account_add) {
