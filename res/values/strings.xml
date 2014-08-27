@@ -367,13 +367,8 @@
     <!-- Bluetooth message permission Alert Activity text [CHAR LIMIT=none] -->
     <string name="bluetooth_map_acceptance_dialog_text">%1$s wants to access your messages. Give access to %2$s?</string>
 
-    <!-- QuickSettings: Smart Pulldown -->
-    <string name="smart_pulldown_title">Smart pulldown</string>
-    <string name="smart_pulldown_summary">Open Quick Settings when there are %1$s notifications present</string>
-    <string name="smart_pulldown_off">Off</string>
-    <string name="smart_pulldown_dismissable">No dismissable</string>
-    <string name="smart_pulldown_persistent">No persistent</string>
-    <string name="smart_pulldown_all">No dismissable or persistent</string>
+
+
 
     <!-- Date & time settings screen title -->
     <string name="date_and_time">Date &amp; time settings</string>
