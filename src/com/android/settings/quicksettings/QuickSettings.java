@@ -107,7 +107,6 @@ public class QuickSettings extends SettingsPreferenceFragment implements
 
         // Add the sound mode (on dual panels preference the preference could be
         // removed previously so we need to do a null check status)
-A
         mRingMode = (MultiSelectListPreference) prefSet.findPreference(EXP_RING_MODE);
         if (mRingMode != null) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -226,7 +225,6 @@ A
             mScreenTimeoutMode.setSummary(mScreenTimeoutMode.getEntries()[index]);
             return true;
         }
-B
         return false;
     }
 
@@ -293,7 +291,6 @@ B
         if (TextUtils.isEmpty(val)) {
             return null;
         } else {
-B
             return val.toString().split(SEPARATOR);
         }
     }
