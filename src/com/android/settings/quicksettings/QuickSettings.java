@@ -51,6 +51,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     private static final String EXP_NETWORK_MODE = "pref_network_mode";
     private static final String EXP_SCREENTIMEOUT_MODE = "pref_screentimeout_mode";
     private static final String QUICK_PULLDOWN = "quick_pulldown";
+    private static final String SMART_PULLDOWN = "smart_pulldown";
     private static final String GENERAL_SETTINGS = "pref_general_settings";
     private static final String STATIC_TILES = "static_tiles";
     private static final String DYNAMIC_TILES = "pref_dynamic_tiles";
@@ -60,6 +61,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     private ListPreference mNetworkMode;
     private ListPreference mScreenTimeoutMode;
     private ListPreference mQuickPulldown;
+    private ListPreference mSmartPulldown;
     private PreferenceCategory mGeneralSettings;
     private PreferenceCategory mStaticTiles;
     private PreferenceCategory mDynamicTiles;
@@ -80,21 +82,32 @@ public class QuickSettings extends SettingsPreferenceFragment implements
         mStaticTiles = (PreferenceCategory) prefSet.findPreference(STATIC_TILES);
         mDynamicTiles = (PreferenceCategory) prefSet.findPreference(DYNAMIC_TILES);
         mQuickPulldown = (ListPreference) prefSet.findPreference(QUICK_PULLDOWN);
+	mSmartPulldown = (ListPreference) prefSet.findPreference(SMART_PULLDOWN);
 
         if (!Utils.isPhone(getActivity())) {
-            if (mQuickPulldown != null) {
+	    if (mQuickPulldown != null && mSmartPulldown != null) {
                 mGeneralSettings.removePreference(mQuickPulldown);
+		mGeneralSettings.removePreference(mSmartPulldown);
             }
         } else {
+	    // Quick Pulldown
             mQuickPulldown.setOnPreferenceChangeListener(this);
             int quickPulldownValue = Settings.System.getInt(resolver,
                     Settings.System.QS_QUICK_PULLDOWN, 0);
             mQuickPulldown.setValue(String.valueOf(quickPulldownValue));
             updatePulldownSummary(quickPulldownValue);
+
+	    // Smart Pulldown
+	    mSmartPulldown.setOnPreferenceChangeListener(this);
+            int smartPulldownValue = Settings.System.getInt(resolver,
+                    Settings.System.QS_SMART_PULLDOWN, 0);
+            mSmartPulldown.setValue(String.valueOf(smartPulldownValue));
+            updateSmartPulldownSummary(smartPulldownValue);
         }
 
         // Add the sound mode (on dual panels preference the preference could be
         // removed previously so we need to do a null check status)
+
         mRingMode = (MultiSelectListPreference) prefSet.findPreference(EXP_RING_MODE);
         if (mRingMode != null) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -200,6 +213,12 @@ public class QuickSettings extends SettingsPreferenceFragment implements
                     quickPulldownValue);
             updatePulldownSummary(quickPulldownValue);
             return true;
+	} else if (preference == mSmartPulldown) {
+            int smartPulldownValue = Integer.valueOf((String) newValue);
+            Settings.System.putInt(resolver, Settings.System.QS_SMART_PULLDOWN,
+                    smartPulldownValue);
+            updateSmartPulldownSummary(smartPulldownValue);
+            return true;
         } else if (preference == mScreenTimeoutMode) {
             int value = Integer.valueOf((String) newValue);
             int index = mScreenTimeoutMode.findIndexOfValue((String) newValue);
@@ -207,6 +226,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
             mScreenTimeoutMode.setSummary(mScreenTimeoutMode.getEntries()[index]);
             return true;
         }
+
         return false;
     }
 
@@ -244,10 +264,36 @@ public class QuickSettings extends SettingsPreferenceFragment implements
         }
     }
 
+    private void updateSmartPulldownSummary(int value) {
+        Resources res = getResources();
+
+        if (value == 0) {
+            // Smart pulldown deactivated
+            mSmartPulldown.setSummary(res.getString(R.string.smart_pulldown_off));
+        } else {
+	    String type = null;
+            switch (value) {
+                case 1:
+                    type = res.getString(R.string.smart_pulldown_dismissable);
+                    break;
+                case 2:
+                    type = res.getString(R.string.smart_pulldown_persistent);
+                    break;
+                default:
+                    type = res.getString(R.string.smart_pulldown_all);
+                    break;
+            }
+            // Remove title capitalized formatting
+            type = type.toLowerCase();
+            mSmartPulldown.setSummary(res.getString(R.string.smart_pulldown_summary, type));
+         }
+     }
+
     public static String[] parseStoredValue(CharSequence val) {
         if (TextUtils.isEmpty(val)) {
             return null;
         } else {
+
             return val.toString().split(SEPARATOR);
         }
     }
