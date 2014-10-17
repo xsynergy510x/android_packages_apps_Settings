@@ -314,8 +314,9 @@
     <string name="lockscreen_maximize_widgets_summary">Expand widgets when the screen is turned on</string>
     <string name="lockscreen_enable_camera_title">Camera widget</string>
 
-    <!-- Safe headset volume restore checkbox -->
+    <!-- Safe headset volume checkboxes -->
     <string name="safe_headset_volume_title">Safe headset volume</string>
+    <string name="safe_headset_volume_restore_title">Reduce headset volume on connection</string>
 
     <!-- Waiver -->
     <string name="cyanogenmod_waiver_title">Waiver</string>
@@ -409,6 +410,10 @@
     <string name="cm_sound_mode_vibrate">Vibrate</string>
     <string name="cm_sound_mode_sound">Sound</string>
     <string name="cm_sound_mode_soundVibrate">Sound &amp; Vibrate</string>
+    <string name="pref_location_mode_title">Location modes</string>
+    <string name="cm_location_mode_battery_saving">Battery saving</string>
+    <string name="cm_location_mode_device_only">Device only</string>
+    <string name="cm_location_mode_high_accuracy">High accuracy</string>
 
     <!-- Reset tiles -->
     <string name="tiles_reset_title">Reset</string>
@@ -1216,7 +1221,8 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
 
     <!-- Set Subscription screen: label no sim -->
     <string name="sub_no_sim">No SIM</string>
-    <string name="multi_sim_entry_format" translatable="false"><xliff:g id="operator">%1$s</xliff:g>-<xliff:g id="index">%2$d</xliff:g></string>
+    <string name="multi_sim_entry_format_no_carrier" translatable="false">SIM - <xliff:g id="index">%1$d</xliff:g></string>
+    <string name="multi_sim_entry_format" translatable="false"><xliff:g id="operator">%1$s</xliff:g> - <xliff:g id="index">%2$d</xliff:g></string>
 
     <!-- Main settings screen, Multi Sim settings title for item to go into the Multi settings -->
     <string name="multi_sim_settings_title">Multi SIM</string>
@@ -1288,12 +1294,12 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="usb_eject_summary">Unmount the USB storage so you can safely remove it</string>
     <string name="usb_insert_summary">Insert USB storage for mounting</string>
     <string name="usb_mount">Mount USB storage</string>
-    <string name="usb_mount_summary"></string>
+    <string name="usb_mount_summary" translatable="false"></string>
     <string name="usb_format">Erase USB storage</string>
     <string name="usb_format_summary">Erases all data on the USB storage, such as music and photos</string>
     <string name="dlg_confirm_usb_unmount_title">Unmount USB storage?</string>
     <string name="dlg_confirm_usb_unmount_text">If you unmount the USB storage, some apps you are using will stop and may be unavailable until you remount the USB storage.</string>
-    <string name="dlg_error_usb_unmount_title"></string>
+    <string name="dlg_error_usb_unmount_title" translatable="false"></string>
     <string name="dlg_error_usb_unmount_text">Couldn\'t unmount USB storage. Try again later.</string>
     <string name="usb_unmount_inform_text">USB storage will be unmounted.</string>
     <string name="usb_ejecting_title">Unmounting USB storage</string>
@@ -1309,12 +1315,12 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="sd_eject_summary">Unmount the SD card so you can safely remove it</string>
     <string name="sd_insert_summary">Insert an SD card for mounting</string>
     <string name="sd_mount">Mount SD card</string>
-    <string name="sd_mount_summary"></string>
+    <string name="sd_mount_summary" translatable="false"></string>
     <string name="sd_format">Erase SD card</string>
     <string name="sd_format_summary">Erases all data on the SD card, such as music and photos</string>
     <string name="dlg_confirm_sd_unmount_title">Unmount SD card?</string>
     <string name="dlg_confirm_sd_unmount_text">If you unmount the SD card, some apps you are using will stop and may be unavailable until you remount the SD card.</string>
-    <string name="dlg_error_sd_unmount_title"></string>
+    <string name="dlg_error_sd_unmount_title" translatable="false"></string>
     <string name="dlg_error_sd_unmount_text">Couldn\'t unmount SD card. Try again later.</string>
     <string name="sd_unmount_inform_text">SD card will be unmounted.</string>
     <string name="sd_ejecting_title">Unmounting SD card</string>
@@ -1387,6 +1393,11 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="prompt">Prompt</string>
     <string name="prompt_user">Prompt user</string>
 
+    <!-- SAR information -->
+    <string name="sar_info">Maximum SAR</string>
+    <string name="maximum_head_level">Head: %1$s W/kg</string>
+    <string name="maximum_body_level">Body: %1$s W/kg</string>
+
     <!-- Tune Away settings -->
     <string name="tune_away_title">TuneAway</string>
     <!-- Summary for the TuneAway status displayed in Multi SIM Settings -->
@@ -1413,4 +1424,29 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="wifi_ap_clients_title">Connected devices</string>
     <string name="wifi_ap_client_ap_disabled">Hotspot is disabled</string>
     <string name="wifi_ap_client_none_connected">No devices connected</string>
+
+    <!-- Profiles -->
+    <string name="profile_menu_delete_title">Delete</string>
+    <string name="profile_menu_triggers_title">Modify triggers</string>
+
+    <string name="profile_action_none">No action</string>
+    <string name="profile_action_disabled">Disable</string>
+    <string name="profile_action_enable">Enable</string>
+
+    <string name="profile_tabs_wifi">Wi-Fi</string>
+    <string name="profile_tabs_bluetooth">Bluetooth</string>
+    <string name="profile_tabs_nfc">NFC</string>
+
+    <string name="profile_setup_setup_triggers_title">Step 1: Add triggers</string>
+    <string name="profile_setup_setup_triggers_title_config">Modify triggers: <xliff:g id="profile_name">%1$s</xliff:g></string>
+
+    <string name="profile_setup_actions_title">Step 2: Setup actions</string>
+    <string name="profile_setup_actions_title_config">Reconfigure actions</string>
+
+    <string name="no_bluetooth_triggers">No Bluetooth triggers available</string>
+    <string name="no_wifi_triggers">No Wi-Fi triggers available</string>
+
+    <string name="profile_setup_setup_triggers_description">Please select triggers which will activate this profile</string>
+    <string name="profile_setup_actions_description">Now configure what happens when the profile is activated</string>
+
 </resources>

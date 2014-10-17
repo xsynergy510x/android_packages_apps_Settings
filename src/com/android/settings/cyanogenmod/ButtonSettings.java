@@ -328,11 +328,11 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
             boolean hasNavBar = WindowManagerGlobal.getWindowManagerService().hasNavigationBar()
                     || forceNavbar;
 
-            if (hasNavBar) {
-                if (!Utils.isPhone(getActivity())) {
-                    mNavigationPreferencesCat.removePreference(mNavigationBarLeftPref);
-                }
-            } else if (needsNavigationBar || !isKeyDisablerSupported()) {
+            if (!Utils.isPhone(getActivity())) {
+                mNavigationPreferencesCat.removePreference(mNavigationBarLeftPref);
+            }
+
+            if (!hasNavBar && (needsNavigationBar || !isKeyDisablerSupported())) {
                 // Hide navigation bar category
                 prefScreen.removePreference(mNavigationPreferencesCat);
             }
@@ -489,6 +489,7 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
            off if enabling */
         if (backlight != null) {
             backlight.setEnabled(!enabled);
+            backlight.updateSummary();
         }
 
         /* Toggle hardkey control availability depending on navbar state */

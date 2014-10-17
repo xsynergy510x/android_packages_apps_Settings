@@ -671,7 +671,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     public static void restore(Context ctx) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         if (isAdaptiveBacklightSupported()) {
-            final boolean enabled = prefs.getBoolean(KEY_ADAPTIVE_BACKLIGHT, true);
+            final boolean enabled = prefs.getBoolean(KEY_ADAPTIVE_BACKLIGHT,
+                    AdaptiveBacklight.isEnabled());
             if (!AdaptiveBacklight.setEnabled(enabled)) {
                 Log.e(TAG, "Failed to restore adaptive backlight settings.");
             } else {
@@ -680,7 +681,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         }
 
         if (isSunlightEnhancementSupported()) {
-            final boolean enabled = prefs.getBoolean(KEY_SUNLIGHT_ENHANCEMENT, false);
+            final boolean enabled = prefs.getBoolean(KEY_SUNLIGHT_ENHANCEMENT,
+                    SunlightEnhancement.isEnabled());
             if (SunlightEnhancement.isAdaptiveBacklightRequired() &&
                     !AdaptiveBacklight.isEnabled()) {
                 SunlightEnhancement.setEnabled(false);
@@ -695,7 +697,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         }
 
         if (isColorEnhancementSupported()) {
-            final boolean enabled = prefs.getBoolean(KEY_COLOR_ENHANCEMENT, true);
+            final boolean enabled = prefs.getBoolean(KEY_COLOR_ENHANCEMENT,
+                    ColorEnhancement.isEnabled());
             if (!ColorEnhancement.setEnabled(enabled)) {
                 Log.e(TAG, "Failed to restore color enhancement settings.");
             } else {
@@ -704,7 +707,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         }
 
         if (isTapToWakeSupported()) {
-            final boolean enabled = prefs.getBoolean(KEY_TAP_TO_WAKE, true);
+            final boolean enabled = prefs.getBoolean(KEY_TAP_TO_WAKE,
+                    TapToWake.isEnabled());
             if (!TapToWake.setEnabled(enabled)) {
                 Log.e(TAG, "Failed to restore tap-to-wake settings.");
             } else {
