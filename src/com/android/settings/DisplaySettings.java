@@ -91,6 +91,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_DISPLAY_GAMMA = "gamma_tuning";
     private static final String KEY_SCREEN_COLOR_SETTINGS = "screencolor_settings";
 
+	private static final String KEY_DYNAMIC_STATUS_BAR = "dynamic_status_bar";
+    private static final String KEY_DYNAMIC_NAVIGATION_BAR = "dynamic_navigation_bar";
+    private static final String KEY_DYNAMIC_SYSTEM_BARS_GRADIENT = "dynamic_system_bars_gradient";
+    private static final String KEY_DYNAMIC_STATUS_BAR_FILTER = "dynamic_status_bar_filter"; 
+
+
     private static final int DLG_GLOBAL_CHANGE_WARNING = 1;
 
     private static final String KEY_EXPANDED_DESKTOP = "expanded_desktop";
@@ -105,6 +111,11 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private CheckBoxPreference mWakeWhenPluggedOrUnplugged;
     private CheckBoxPreference mScreenOffAnimation;
     private ListPreference mScreenAnimationStylePreference;
+
+	private CheckBoxPreference mDynamicStatusBar;
+    private CheckBoxPreference mDynamicNavigationBar;
+    private CheckBoxPreference mDynamicSystemBarsGradient;
+    private CheckBoxPreference mDynamicStatusBarFilter;
 
     private PreferenceScreen mNotificationPulse;
     private PreferenceScreen mBatteryPulse;
@@ -201,6 +212,20 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         mFontSizePref = (FontDialogPreference) findPreference(KEY_FONT_SIZE);
         mFontSizePref.setOnPreferenceChangeListener(this);
         mFontSizePref.setOnPreferenceClickListener(this);
+
+		mDynamicStatusBar = (CheckBoxPreference) findPreference(KEY_DYNAMIC_STATUS_BAR);
+        mDynamicStatusBar.setPersistent(false);
+
+        mDynamicNavigationBar = (CheckBoxPreference) findPreference(KEY_DYNAMIC_NAVIGATION_BAR);
+        mDynamicNavigationBar.setPersistent(false);
+
+        mDynamicSystemBarsGradient =
+                (CheckBoxPreference) findPreference(KEY_DYNAMIC_SYSTEM_BARS_GRADIENT);
+        mDynamicSystemBarsGradient.setPersistent(false);
+
+        mDynamicStatusBarFilter =
+                (CheckBoxPreference) findPreference(KEY_DYNAMIC_STATUS_BAR_FILTER);
+        mDynamicStatusBarFilter.setPersistent(false);
 
         PreferenceCategory advancedPrefs = (PreferenceCategory) findPreference(CATEGORY_ADVANCED);
 
@@ -521,6 +546,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         updateScreenSaverSummary();
         updateLightPulseSummary();
         updateBatteryPulseSummary();
+		updateDynamicSystemBarsCheckboxes();
     }
 
     private void updateScreenSaverSummary() {
@@ -568,6 +594,38 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         pref.setSummary(getString(R.string.summary_font_size, fontDesc));
     }
 
+	private void updateDynamicSystemBarsCheckboxes() {
+        final Resources res = getResources();
+
+        final boolean isStatusBarDynamic = Settings.System.getInt(getContentResolver(),
+                Settings.System.DYNAMIC_STATUS_BAR_STATE, 0) == 1;
+
+        final boolean hasNavigationBar = res.getDimensionPixelSize(res.getIdentifier(
+                "navigation_bar_height", "dimen", "android")) > 0;
+        final boolean isNavigationBarDynamic = hasNavigationBar && Settings.System.getInt(
+                getContentResolver(), Settings.System.DYNAMIC_NAVIGATION_BAR_STATE, 0) == 1;
+
+        final boolean isAnyBarDynamic = isStatusBarDynamic || isNavigationBarDynamic;
+
+        mDynamicStatusBar.setChecked(isStatusBarDynamic);
+
+        mDynamicNavigationBar.setEnabled(hasNavigationBar);
+        mDynamicNavigationBar.setChecked(isNavigationBarDynamic);
+
+        final boolean areSystemBarsGradient = isAnyBarDynamic && Settings.System.getInt(
+                getContentResolver(), Settings.System.DYNAMIC_SYSTEM_BARS_GRADIENT_STATE, 0) == 1;
+        final boolean isStatusBarFilter = isStatusBarDynamic && Settings.System.getInt(
+                getContentResolver(), Settings.System.DYNAMIC_STATUS_BAR_FILTER_STATE, 0) == 1;
+
+        mDynamicSystemBarsGradient.setEnabled(isAnyBarDynamic &&
+                (areSystemBarsGradient || !isStatusBarFilter));
+        mDynamicSystemBarsGradient.setChecked(areSystemBarsGradient);
+
+        mDynamicStatusBarFilter.setEnabled(isStatusBarDynamic &&
+                (isStatusBarFilter || !areSystemBarsGradient));
+        mDynamicStatusBarFilter.setChecked(isStatusBarFilter);
+    }
+
     public void writeFontSizePreference(Object objValue) {
         try {
             mCurConfig.fontScale = Float.parseFloat(objValue.toString());
@@ -596,7 +654,41 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             return true;
         } else if (preference == mTapToWake) {
             return TapToWake.setEnabled(mTapToWake.isChecked());
+        } else if (preference == mDynamicStatusBar) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DYNAMIC_STATUS_BAR_STATE,
+                    mDynamicStatusBar.isChecked() ? 1 : 0);
+            updateDynamicSystemBarsCheckboxes();
+        } else if (preference == mDynamicNavigationBar) {
+            final Resources res = getResources();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DYNAMIC_NAVIGATION_BAR_STATE,
+                    mDynamicNavigationBar.isChecked() && res.getDimensionPixelSize(
+                            res.getIdentifier("navigation_bar_height", "dimen", "android")) > 0 ?
+                                    1 : 0);
+            updateDynamicSystemBarsCheckboxes();
+        } else if (preference == mDynamicSystemBarsGradient) {
+            final boolean enableGradient = mDynamicSystemBarsGradient.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DYNAMIC_SYSTEM_BARS_GRADIENT_STATE,
+                    enableGradient ? 1 : 0);
+            if (enableGradient) {
+                Settings.System.putInt(getContentResolver(),
+                        Settings.System.DYNAMIC_STATUS_BAR_FILTER_STATE, 0);
+            }
+            updateDynamicSystemBarsCheckboxes();
+        } else if (preference == mDynamicStatusBarFilter) {
+            final boolean enableFilter = mDynamicStatusBarFilter.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.DYNAMIC_STATUS_BAR_FILTER_STATE,
+                    enableFilter ? 1 : 0);
+            if (enableFilter) {
+                Settings.System.putInt(getContentResolver(),
+                        Settings.System.DYNAMIC_SYSTEM_BARS_GRADIENT_STATE, 0);
+            }
+            updateDynamicSystemBarsCheckboxes();
         }
+
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
