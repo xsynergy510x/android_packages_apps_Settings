@@ -114,6 +114,8 @@
     <string name="connection_state_disabled">Disable</string>
     <string name="connection_state_enabled">Enable</string>
     <string name="volume_override_summary">Set to %1$s/%2$s</string>
+    <string name="volume_override_summary_no_override">Do not override</string>
+    <string name="profile_volume_override_checkbox_label">Override volume</string>
 
     <!-- Menu item for managing profiles -->
     <string name="profile_profiles_manage">Profiles</string>
@@ -180,9 +182,10 @@
 
     <!-- Ring mode -->
     <string name="ring_mode_title">Ring mode</string>
-    <string name="ring_mode_normal">Normal</string>
+    <string name="ring_mode_normal">Ring</string>
     <string name="ring_mode_vibrate">Vibrate</string>
     <string name="ring_mode_mute">Mute</string>
+    <string name="ring_mode_unchanged">Unchanged</string>
 
     <!-- Volume panel style -->
     <string name="volume_overlay_title">Volume panel style</string>
@@ -313,7 +316,9 @@
     <string name="lockscreen_maximize_widgets_title">Maximize widgets</string>
     <string name="lockscreen_maximize_widgets_summary">Expand widgets when the screen is turned on</string>
     <string name="lockscreen_enable_camera_title">Camera widget</string>
-    <string name="lockscreen_enable_application_widget_title">Appcast widget</string>
+    <!-- "Pass" is a proper noun and should not be translated -->
+    <string name="lockscreen_enable_application_widget_title">Pass widget</string>
+    <string name="lockscreen_application_widget_summary">Baton feature: Quick launch cloudified apps running on other devices</string>
 
     <!-- Safe headset volume checkboxes -->
     <string name="safe_headset_volume_title">Safe headset volume</string>
@@ -1221,11 +1226,6 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="voice_wakeup_activity_title">Activity to launch</string>
     <string name="voice_wakeup_default_activity">Google Now</string>
 
-    <!-- Set Subscription screen: label no sim -->
-    <string name="sub_no_sim">No SIM</string>
-    <string name="multi_sim_entry_format_no_carrier" translatable="false">SIM - <xliff:g id="index">%1$d</xliff:g></string>
-    <string name="multi_sim_entry_format" translatable="false"><xliff:g id="operator">%1$s</xliff:g> - <xliff:g id="index">%2$d</xliff:g></string>
-
     <!-- Main settings screen, Multi Sim settings title for item to go into the Multi settings -->
     <string name="multi_sim_settings_title">SIM cards</string>
 
@@ -1236,7 +1236,7 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="voice_title">Voice calls</string>
 
     <!-- Multi Sim Settings screen, Data box label -->
-    <string name="data_title">Data calls</string>
+    <string name="data_title">Data connection</string>
 
     <!-- Multi Sim Settings screen, SMS box label -->
     <string name="sms_title">Sending SMS</string>
@@ -1393,8 +1393,7 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
     <string name="set_priority_sub_error">Error while setting priority subscription. Subscription not active.</string>
 
     <!--Prompt, used only for voice-->
-    <string name="prompt">Prompt</string>
-    <string name="prompt_user">Prompt user</string>
+    <string name="prompt">Always ask</string>
 
     <!-- About phone settings screen, setting option dialog title to show regulatory information [CHAR LIMIT=25] -->
     <string name="regulatory_information_dialog_title" translatable="false">@string/regulatory_information</string>
