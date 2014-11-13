@@ -812,23 +812,29 @@ public class Settings extends PreferenceActivity
         		if (!showDev) {
 	        	    target.remove(i);
 	            } else if (!(Utils.isPackageInstalled(this, "com.teamkang.fauxclock"))) {
+                    target.remove(i);
+                }
             } else if (id == R.id.account_add) {
                 if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
                      target.remove(i);
                  }
             } else if (id == R.id.superuser) {
           		if (!DevelopmentSettings.isRootForAppsEnabled() || Utils.isPackageInstalled(this, "eu.chainfire.supersu")) {
-        		// Remove Superuser if no root or SuperSU enabled
-                        target.remove(i);
-                   }
-            } else if (id == R.id.supersu_settings) {
-                // Embedding into Settings is supported from SuperSU v1.85 and up
-                boolean isSupported = false;
-                try {
-                    isSupported = (getPackageManager().getPackageInfo("eu.chainfire.supersu", 0).versionCode >= 185);
-                } catch (PackageManager.NameNotFoundException e) {
+        		    // Remove Superuser if no root or SuperSU enabled
+                    target.remove(i);
                 }
-                if (!DevelopmentSettings.isRootForAppsEnabled() || !isSupported) {
+            } else if (id == R.id.supersu_settings) {
+                if(showDev) {
+                    // Embedding into Settings is supported from SuperSU v1.85 and up
+                    boolean isSupported = false;
+                    try {
+                        isSupported = (getPackageManager().getPackageInfo("eu.chainfire.supersu", 0).versionCode >= 185);
+                    } catch (PackageManager.NameNotFoundException e) {
+                    }
+                    if (!DevelopmentSettings.isRootForAppsEnabled() || !isSupported) {
+                        target.remove(i);
+                    }
+                } else {
                     target.remove(i);
                 }
             } else if (id == R.id.multi_sim_settings) {
