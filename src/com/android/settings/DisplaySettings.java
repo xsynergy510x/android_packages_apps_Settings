@@ -157,6 +157,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
 
         addPreferencesFromResource(R.xml.display);
 
+	PreferenceScreen prefSet = getPreferenceScreen();
+
         PreferenceCategory displayPrefs = (PreferenceCategory)
                 findPreference(KEY_CATEGORY_DISPLAY);
         PreferenceCategory interfacePrefs = (PreferenceCategory)
