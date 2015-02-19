@@ -642,9 +642,9 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             boolean value = (Boolean) objValue;
             Settings.Secure.putInt(getContentResolver(), DOZE_ENABLED, value ? 1 : 0);
         }
-        if (KEY_WAKEUP_WHEN_PLUGGED_UNPLUGGED.equals(key)) {
+        if (KEY_WAKE_WHEN_PLUGGED_OR_UNPLUGGED.equals(key)) {
             Settings.System.putInt(getContentResolver(),
-                    Settings.System.WAKEUP_WHEN_PLUGGED_UNPLUGGED,
+                    Settings.Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
                     (Boolean) objValue ? 1 : 0);
         }
 
