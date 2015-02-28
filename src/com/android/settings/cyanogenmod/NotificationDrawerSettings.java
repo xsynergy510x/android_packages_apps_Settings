@@ -19,9 +19,12 @@ import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.UserHandle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.ListPreference;
+import android.preference.PreferenceScreen;
 import android.provider.Settings;
 
 import android.provider.SearchIndexableResource;
@@ -34,16 +37,19 @@ import com.android.settings.search.Indexable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationDrawerSettings extends SettingsPreferenceFragment 
-    implements Indexable, OnPreferenceChangeListener {
+public class NotificationDrawerSettings extends SettingsPreferenceFragment implements Indexable,
+        Preference.OnPreferenceChangeListener, OnPreferenceChangeListener {
+    private static final String QUICK_PULLDOWN = "quick_pulldown";
+
+    private ListPreference mQuickPulldown;
     private Preference mQSTiles;
 
     private static final String PREF_SMART_PULLDOWN = "smart_pulldown";
     ListPreference mSmartPulldown;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.notification_drawer_settings);
 
         mQSTiles = findPreference("qs_order");
@@ -58,25 +64,27 @@ public class NotificationDrawerSettings extends SettingsPreferenceFragment
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        PreferenceScreen prefSet = getPreferenceScreen();
+        ContentResolver resolver = getActivity().getContentResolver();
+        mQuickPulldown = (ListPreference) prefSet.findPreference(QUICK_PULLDOWN);
+
+        mQuickPulldown.setOnPreferenceChangeListener(this);
+        int quickPulldownValue = Settings.System.getIntForUser(resolver,
+                Settings.System.QS_QUICK_PULLDOWN, 0, UserHandle.USER_CURRENT);
+        mQuickPulldown.setValue(String.valueOf(quickPulldownValue));
+        updatePulldownSummary(quickPulldownValue);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
         int qsTileCount = QSTiles.determineTileCount(getActivity());
         mQSTiles.setSummary(getResources().getQuantityString(R.plurals.qs_tiles_summary,
                     qsTileCount, qsTileCount));
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        ContentResolver resolver = getActivity().getContentResolver();
-        if (preference == mSmartPulldown) {  
-            int smartPulldown = Integer.valueOf((String) newValue); 
-            Settings.System.putInt(getContentResolver(), Settings.System.QS_SMART_PULLDOWN, 
-                    smartPulldown); 
-            updateSmartPulldownSummary(smartPulldown);  
-            return true;
-         }
-         return false;
     }
 
     private void updateSmartPulldownSummary(int value) {    
@@ -101,7 +109,40 @@ public class NotificationDrawerSettings extends SettingsPreferenceFragment
             // Remove title capitalized formatting  
             type = type.toLowerCase();  
             mSmartPulldown.setSummary(res.getString(R.string.smart_pulldown_summary, type));    
-        }   
+        }
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        ContentResolver resolver = getContentResolver();
+        if (preference == mQuickPulldown) {
+            int quickPulldownValue = Integer.valueOf((String) newValue);
+            Settings.System.putIntForUser(resolver, Settings.System.QS_QUICK_PULLDOWN,
+                    quickPulldownValue, UserHandle.USER_CURRENT);
+            updatePulldownSummary(quickPulldownValue);
+            return true;
+        } else if (preference == mSmartPulldown) {
+            int smartPulldown = Integer.valueOf((String) newValue);
+            Settings.System.putInt(getContentResolver(), Settings.System.QS_SMART_PULLDOWN,
+                    smartPulldown);
+            updateSmartPulldownSummary(smartPulldown);
+            return true;
+         }
+        return false;
+    }
+
+    private void updatePulldownSummary(int value) {
+        Resources res = getResources();
+
+        if (value == 0) {
+            // quick pulldown deactivated
+            mQuickPulldown.setSummary(res.getString(R.string.quick_pulldown_off));
+        } else {
+            String direction = res.getString(value == 2
+                    ? R.string.quick_pulldown_summary_left
+                    : R.string.quick_pulldown_summary_right);
+            mQuickPulldown.setSummary(res.getString(R.string.quick_pulldown_summary, direction));
+        }
     }
 
     public static final Indexable.SearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
