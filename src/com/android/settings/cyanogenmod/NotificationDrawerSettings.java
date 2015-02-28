@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationDrawerSettings extends SettingsPreferenceFragment implements Indexable,
-        Preference.OnPreferenceChangeListener, OnPreferenceChangeListener {
+        Preference.OnPreferenceChangeListener {
     private static final String QUICK_PULLDOWN = "quick_pulldown";
 
     private ListPreference mQuickPulldown;
