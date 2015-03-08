@@ -82,7 +82,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_FONT_SIZE = "font_size";
     private static final String KEY_SCREEN_SAVER = "screensaver";
     private static final String KEY_LIFT_TO_WAKE = "lift_to_wake";
-    private static final String KEY_DOZE = "doze";
     private static final String KEY_AUTO_BRIGHTNESS = "auto_brightness";
     private static final String KEY_TAP_TO_WAKE = "double_tap_wake_gesture";
     private static final String KEY_PROXIMITY_WAKE = "proximity_on_wake";
@@ -90,6 +89,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
     private static final String KEY_NOTIFICATION_LIGHT = "notification_light";
     private static final String KEY_BATTERY_LIGHT = "battery_light";
+
+    private static final String KEY_DOZE_FRAGMENT = "doze_fragment";
 
     private static final int DLG_GLOBAL_CHANGE_WARNING = 1;
 
@@ -108,6 +109,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private SwitchPreference mWakeWhenPluggedOrUnplugged;
 
     private CmHardwareManager mCmHardwareManager;
+    private PreferenceScreen mDozeFragement;
 
     private ContentObserver mAccelerometerRotationObserver =
             new ContentObserver(new Handler()) {
@@ -186,13 +188,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             }
         }
 
-        mDozePreference = (SwitchPreference) findPreference(KEY_DOZE);
-        if (mDozePreference != null && isDozeAvailable(activity)) {
-            mDozePreference.setOnPreferenceChangeListener(this);
-        } else {
-            if (displayPrefs != null && mDozePreference != null) {
-                displayPrefs.removePreference(mDozePreference);
-            }
+        mDozeFragement = (PreferenceScreen) findPreference(KEY_DOZE_FRAGMENT);
+        if (!isDozeAvailable(activity)) {
+            getPreferenceScreen().removePreference(mDozeFragement);
+            mDozeFragement = null;
         }
 
         mTapToWake = (SwitchPreference) findPreference(KEY_TAP_TO_WAKE);
@@ -434,12 +433,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             int value = Settings.Secure.getInt(getContentResolver(), WAKE_GESTURE_ENABLED, 0);
             mLiftToWakePreference.setChecked(value != 0);
         }
-
-        // Update doze if it is available.
-        if (mDozePreference != null) {
-            int value = Settings.Secure.getInt(getContentResolver(), DOZE_ENABLED, 1);
-            mDozePreference.setChecked(value != 0);
-        }
     }
 
     private void updateScreenSaverSummary() {
@@ -532,10 +525,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             boolean value = (Boolean) objValue;
             Settings.Secure.putInt(getContentResolver(), WAKE_GESTURE_ENABLED, value ? 1 : 0);
         }
-        if (preference == mDozePreference) {
-            boolean value = (Boolean) objValue;
-            Settings.Secure.putInt(getContentResolver(), DOZE_ENABLED, value ? 1 : 0);
-        }
         return true;
     }
 
@@ -621,7 +610,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                         result.add(KEY_LIFT_TO_WAKE);
                     }
                     if (!isDozeAvailable(context)) {
-                        result.add(KEY_DOZE);
+                        result.add(KEY_DOZE_FRAGMENT);
                     }
                     return result;
                 }
