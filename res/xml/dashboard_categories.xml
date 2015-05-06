@@ -342,6 +342,13 @@
                 android:icon="@drawable/ic_settings_print"
                 />
 
+	<!-- Wakelock Blocker -->
+        <dashboard-tile
+                android:id="@+id/wakelock_blocker_settings"
+                android:title="@string/wakelock_blocker_title"
+                android:fragment="com.android.settings.optipop.fragments.WakeLockBlocker"
+                android:icon="@drawable/ic_settings_buttons" />
+
         <!-- Performance -->
         <dashboard-tile
                 android:id="@+id/performance_settings"
