@@ -57,6 +57,13 @@
                 android:title="@string/accelerometer_title"
                 settings:advanced="false"/>
 
+        <!-- Doze // Ambient display -->
+        <SwitchPreference
+                android:key="doze"
+                android:title="@string/doze_title"
+                android:summary="@string/doze_summary"
+                android:persistent="false" />
+
         <!-- Lift to wake -->
         <SwitchPreference
                 android:key="lift_to_wake"
@@ -92,12 +99,6 @@
                 android:persistent="false"
                 android:entries="@array/screen_timeout_entries"
                 android:entryValues="@array/screen_timeout_values" />
-
-        <!-- Doze // Ambient display -->
-	<PreferenceScreen
-                android:key="doze_fragment"
-                android:title="@string/doze_title"
-                android:fragment="com.android.settings.paranoid.AmbientSettings" />
 
         <!-- Wake on plug -->
         <SwitchPreference
