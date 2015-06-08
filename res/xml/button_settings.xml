@@ -30,6 +30,13 @@
         android:persistent="false"
         settings:advanced="true"/>
 
+    <!--PA Pie Control -->
+    <PreferenceScreen
+        android:key="pa_pie_control"
+        android:title="@string/pa_pie_control_title"
+        android:summary="@string/pa_piecontrol_settings_summary"
+        android:fragment="com.android.settings.paranoid.PieControl" />
+
     <PreferenceCategory
         android:key="navigation_bar_category"
         android:title="@string/navigation_bar_category" >
