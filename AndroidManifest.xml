@@ -76,6 +76,7 @@
     <uses-permission android:name="com.cyanogen.permission.REQUEST_KILL_SWITCH_OP" />
     <uses-permission android:name="cyanogenmod.permission.FINISH_SETUP" />
     <uses-permission android:name="android.permission.ACCESS_FINGERPRINT_SERVICE" />
+    <uses-permission android:name="com.cyngn.stats.SEND_ANALYTICS" />
 
     <permission
         android:name="cyanogenmod.permission.PROTECTED_APP"
@@ -1256,6 +1257,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name="SetupManageFingerprints"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.android.wizard"
+            android:theme="@style/SetupWizardDisableAppStartingTheme" />
 
         <activity android:name="SetupChooseLockPassword"
             android:exported="false"
