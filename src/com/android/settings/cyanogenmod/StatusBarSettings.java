@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.SwitchPreference;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -52,7 +51,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
     private static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
     private static final String STATUS_BAR_BATTERY_STYLE = "status_bar_battery_style";
     private static final String STATUS_BAR_SHOW_BATTERY_PERCENT = "status_bar_show_battery_percent";
-    private static final String PREF_ENABLE_TASK_MANAGER = "enable_task_manager";
 
     private static final int STATUS_BAR_BATTERY_STYLE_HIDDEN = 4;
     private static final int STATUS_BAR_BATTERY_STYLE_TEXT = 6;
@@ -61,8 +59,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
     private ListPreference mStatusBarAmPm;
     private ListPreference mStatusBarBattery;
     private ListPreference mStatusBarBatteryShowPercent;
-
-    private SwitchPreference mEnableTaskManager;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -106,12 +102,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
         mStatusBarBatteryShowPercent.setSummary(mStatusBarBatteryShowPercent.getEntry());
         enableStatusBarBatteryDependents(batteryStyle);
         mStatusBarBatteryShowPercent.setOnPreferenceChangeListener(this);
-
-        // Task manager
-        mEnableTaskManager = (SwitchPreference) prefSet.findPreference(PREF_ENABLE_TASK_MANAGER);
-        mEnableTaskManager.setChecked((Settings.System.getInt(getActivity().getContentResolver(),
-                Settings.System.ENABLE_TASK_MANAGER, 0) == 1));
-
     }
 
     @Override
@@ -167,16 +157,6 @@ public class StatusBarSettings extends SettingsPreferenceFragment
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-       if  (preference == mEnableTaskManager) {
-            boolean enabled = ((SwitchPreference)preference).isChecked();
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.ENABLE_TASK_MANAGER, enabled ? 1:0);
-        }
-        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     private void enableStatusBarBatteryDependents(int batteryIconStyle) {
