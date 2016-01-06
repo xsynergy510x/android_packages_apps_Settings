@@ -408,7 +408,7 @@
             android:title="@string/kill_app_longpress_back"
             android:summary="@string/kill_app_longpress_back_summary"/>
 
-	<com.android.settings.cyanogenmod.CMSystemSettingSwitchPreference
+	<com.android.settings.cyanogenmod.SystemSettingSwitchPreference
             android:key="recents_full_screen"
             android:title="@string/recents_show_fullscreen"
             android:summaryOn="@string/recents_fullscreen_summary_enabled"
